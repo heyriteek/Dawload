@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - Insta Downloader</title>
+  <style>
+    * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background: #0f172a; color: #fff; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+    .card { background: #1e293b; padding: 25px; border-radius: 12px; width: 100%; max-width: 450px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+    h2 { text-align: center; margin-top: 0; color: #38bdf8; }
+    label { font-size: 14px; color: #94a3b8; display: block; margin-top: 15px; margin-bottom: 5px; }
+    input, textarea { width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #fff; font-size: 14px; }
+    button { width: 100%; padding: 12px; border: none; border-radius: 6px; background: #0284c7; color: #fff; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 20px; transition: 0.2s; }
+    button:hover { background: #0369a1; }
+    .hidden { display: none; }
+    .msg { margin-top: 15px; text-align: center; font-size: 14px; font-weight: bold; }
+    .logout-btn { background: #dc2626; margin-top: 10px; }
+    .logout-btn:hover { background: #b91c1c; }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h2>Admin Panel</h2>
+
+  <!-- LOGIN FORM -->
+  <div id="login-form">
+    <label>Admin Email</label>
+    <input type="email" id="email" placeholder="mrriteek82@gmail.com">
+    <label>Password</label>
+    <input type="password" id="password" placeholder="••••••••">
+    <button onclick="login()">Login</button>
+  </div>
+
+  <!-- DASHBOARD FORM -->
+  <div id="dashboard" class="hidden">
+    <label>RapidAPI Key</label>
+    <input type="text" id="apiKey" placeholder="Paste RapidAPI Key here">
+
+    <label>RapidAPI Host</label>
+    <input type="text" id="apiHost" placeholder="e.g. instagram-downloader-download-instagram-videos-stories1.p.rapidapi.com">
+
+    <label>Notice Banner Message</label>
+    <textarea id="notice" rows="2" placeholder="e.g. Welcome to Ad-Free Downloader!"></textarea>
+
+    <button onclick="saveData()">Save Changes</button>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </div>
+
+  <div id="status-msg" class="msg"></div>
+</div>
+
+<!-- FIREBASE SDKs -->
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+<script>
+  // YOUR FIREBASE CONFIG
+  const firebaseConfig = {
+    apiKey: "AIzaSyAMk0VFAi54nYovyErqfFD06x-vHlh1m9c",
+    authDomain: "dawload-8b47d.firebaseapp.com",
+    projectId: "dawload-8b47d",
+    storageBucket: "dawload-8b47d.firebasestorage.app",
+    messagingSenderId: "504882478942",
+    appId: "1:504882478942:web:24d8fea2edf0f7ebf559cf",
+    measurementId: "G-1BHK6JJBLV"
+  };
+  
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+  }
+  
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+
+  // Auth State Check
+  auth.onAuthStateChanged((user) => {
+    if (user) {
+      document.getElementById('login-form').classList.add('hidden');
+      document.getElementById('dashboard').classList.remove('hidden');
+      loadSettings();
+    } else {
+      document.getElementById('login-form').classList.remove('hidden');
+      document.getElementById('dashboard').classList.add('hidden');
+    }
+  });
+
+  // Login
+  function login() {
+    const e = document.getElementById('email').value;
+    const p = document.getElementById('password').value;
+    const msg = document.getElementById('status-msg');
+    
+    auth.signInWithEmailAndPassword(e, p)
+      .then(() => { msg.style.color = '#4ade80'; msg.innerText = "Login Successful!"; })
+      .catch((err) => { msg.style.color = '#f87171'; msg.innerText = err.message; });
+  }
+
+  // Load Settings from Firestore
+  function loadSettings() {
+    db.collection('settings').doc('config').get().then((doc) => {
+      if (doc.exists) {
+        const data = doc.data();
+        document.getElementById('apiKey').value = data.apiKey || '';
+        document.getElementById('apiHost').value = data.apiHost || '';
+        document.getElementById('notice').value = data.notice || '';
+      }
+    });
+  }
+
+  // Save Settings to Firestore
+  function saveData() {
+    const msg = document.getElementById('status-msg');
+    db.collection('settings').doc('config').set({
+      apiKey: document.getElementById('apiKey').value,
+      apiHost: document.getElementById('apiHost').value,
+      notice: document.getElementById('notice').value
+    }, { merge: true }).then(() => {
+      msg.style.color = '#4ade80';
+      msg.innerText = "Settings saved successfully!";
+      setTimeout(() => msg.innerText = "", 3000);
+    }).catch((err) => {
+      msg.style.color = '#f87171';
+      msg.innerText = err.message;
+    });
+  }
+
+  // Logout
+  function logout() {
+    auth.signOut();
+  }
+</script>
+</body>
+</html>
+
