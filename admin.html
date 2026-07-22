@@ -57,10 +57,11 @@
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
 <script>
-  // YOUR FIREBASE CONFIG
+  // FIREBASE CONFIG (Updated)
   const firebaseConfig = {
-    apiKey: "AIzaSyAMk0VFAi54nYovyErqfFD06x-vHlh1m9c",
+    apiKey: "AIzaSyAMk0VFAi54nYovyErqfFD0KPmRelM8Uvg",
     authDomain: "dawload-8b47d.firebaseapp.com",
+    databaseURL: "https://dawload-8b47d-default-rtdb.firebaseio.com",
     projectId: "dawload-8b47d",
     storageBucket: "dawload-8b47d.firebasestorage.app",
     messagingSenderId: "504882478942",
@@ -68,12 +69,36 @@
     measurementId: "G-1BHK6JJBLV"
   };
   
+  // Single initialization check
   if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
   }
   
   const auth = firebase.auth();
   const db = firebase.firestore();
+
+  // Helper for user-friendly error messages
+  function getFriendlyErrorMessage(error) {
+    if (!error || !error.code) return error.message || "An unexpected error occurred.";
+    switch (error.code) {
+      case 'auth/api-key-not-valid':
+        return "Invalid API Key. Please verify your Firebase configuration.";
+      case 'auth/user-not-found':
+      case 'auth/wrong-password':
+      case 'auth/invalid-credential':
+        return "Invalid email or password. Please try again.";
+      case 'auth/invalid-email':
+        return "Please enter a valid email address.";
+      case 'auth/user-disabled':
+        return "This account has been disabled.";
+      case 'auth/too-many-requests':
+        return "Too many failed attempts. Please try again later.";
+      case 'auth/network-request-failed':
+        return "Network error. Please check your internet connection.";
+      default:
+        return error.message;
+    }
+  }
 
   // Auth State Listener
   auth.onAuthStateChanged((user) => {
@@ -89,17 +114,33 @@
 
   // Login
   function login() {
-    const e = document.getElementById('email').value;
+    const e = document.getElementById('email').value.trim();
     const p = document.getElementById('password').value;
     const msg = document.getElementById('status-msg');
+
+    if (!e || !p) {
+      msg.style.color = '#f87171';
+      msg.innerText = "Please enter both email and password.";
+      return;
+    }
     
+    msg.style.color = '#38bdf8';
+    msg.innerText = "Logging in...";
+
     auth.signInWithEmailAndPassword(e, p)
-      .then(() => { msg.style.color = '#4ade80'; msg.innerText = "Login Successful!"; })
-      .catch((err) => { msg.style.color = '#f87171'; msg.innerText = err.message; });
+      .then(() => { 
+        msg.style.color = '#4ade80'; 
+        msg.innerText = "Login Successful!"; 
+      })
+      .catch((err) => { 
+        msg.style.color = '#f87171'; 
+        msg.innerText = getFriendlyErrorMessage(err); 
+      });
   }
 
   // Load Settings from Firestore
   function loadSettings() {
+    const msg = document.getElementById('status-msg');
     db.collection('settings').doc('config').get().then((doc) => {
       if (doc.exists) {
         const data = doc.data();
@@ -107,12 +148,18 @@
         document.getElementById('apiHost').value = data.apiHost || '';
         document.getElementById('notice').value = data.notice || '';
       }
+    }).catch((err) => {
+      msg.style.color = '#f87171';
+      msg.innerText = "Failed to load settings: " + getFriendlyErrorMessage(err);
     });
   }
 
   // Save Settings to Firestore
   function saveData() {
     const msg = document.getElementById('status-msg');
+    msg.style.color = '#38bdf8';
+    msg.innerText = "Saving changes...";
+
     db.collection('settings').doc('config').set({
       apiKey: document.getElementById('apiKey').value.trim(),
       apiHost: document.getElementById('apiHost').value.trim(),
@@ -120,16 +167,22 @@
     }, { merge: true }).then(() => {
       msg.style.color = '#4ade80';
       msg.innerText = "Settings saved successfully!";
-      setTimeout(() => msg.innerText = "", 3000);
+      setTimeout(() => { if (msg.innerText === "Settings saved successfully!") msg.innerText = ""; }, 3000);
     }).catch((err) => {
       msg.style.color = '#f87171';
-      msg.innerText = err.message;
+      msg.innerText = getFriendlyErrorMessage(err);
     });
   }
 
   // Logout
   function logout() {
-    auth.signOut();
+    const msg = document.getElementById('status-msg');
+    auth.signOut().then(() => {
+      msg.innerText = "";
+    }).catch((err) => {
+      msg.style.color = '#f87171';
+      msg.innerText = getFriendlyErrorMessage(err);
+    });
   }
 </script>
 </body>
