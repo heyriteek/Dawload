@@ -18,13 +18,13 @@
     }
     
     body { 
-      background: #030712; 
+      background: #000000; 
       color: #f8fafc; 
       min-height: 100vh; 
       display: flex; 
       flex-direction: column; 
       align-items: center; 
-      padding: 16px 12px; 
+      padding: 12px 10px; 
       position: relative;
       overflow-x: hidden;
     }
@@ -41,7 +41,7 @@
     /* 1. HERO BANNER CARD */
     .hero-card {
       background: linear-gradient(145deg, #0f172a, #0b0f19);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 20px;
       padding: 20px;
       display: flex;
@@ -49,7 +49,7 @@
       justify-content: space-between;
       position: relative;
       overflow: hidden;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.6);
     }
 
     .hero-text { max-width: 58%; }
@@ -115,81 +115,94 @@
 
     /* 2. MAIN INPUT CARD */
     .input-card {
-      background: #0f172a;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 20px;
-      padding: 18px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      background: #0d1527;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 22px;
+      padding: 20px 18px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.7);
     }
 
     .input-card-header {
       display: flex;
       align-items: center;
       gap: 12px;
-      margin-bottom: 14px;
+      margin-bottom: 16px;
     }
 
     .link-icon-box {
-      width: 38px;
-      height: 38px;
-      background: rgba(168, 85, 247, 0.15);
-      border-radius: 12px;
+      width: 42px;
+      height: 42px;
+      background: rgba(168, 85, 247, 0.2);
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      border-radius: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #c084fc;
+      color: #d8b4fe;
     }
 
-    .input-card-title h3 { font-size: 15px; font-weight: 700; color: #fff; }
-    .input-card-title p { font-size: 11px; color: #64748b; }
+    .input-card-title h3 { font-size: 16px; font-weight: 700; color: #fff; }
+    .input-card-title p { font-size: 12px; color: #94a3b8; }
 
     .input-box-wrap {
       position: relative;
       display: flex;
       align-items: center;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     input {
       width: 100%;
-      padding: 14px 105px 14px 14px;
-      background: #090d16;
-      border: 1px solid #1e293b;
-      border-radius: 12px;
-      color: #fff;
-      font-size: 13px;
+      height: 58px;
+      padding: 0 115px 0 16px;
+      background: #070c18;
+      border: 1.5px solid #2a3853;
+      border-radius: 14px;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 500;
       outline: none;
+      transition: border-color 0.25s, box-shadow 0.25s;
     }
 
-    input::placeholder { color: #475569; }
-    input:focus { border-color: #8b5cf6; }
+    input::placeholder { color: #8294b0; }
+    input:focus { 
+      border-color: #a855f7; 
+      box-shadow: 0 0 12px rgba(168, 85, 247, 0.25);
+    }
 
     .paste-btn {
       position: absolute;
-      right: 6px;
-      background: #a855f7;
+      right: 8px;
+      height: 42px;
+      background: linear-gradient(135deg, #a855f7, #8b5cf6);
       color: #fff;
       border: none;
-      padding: 8px 16px;
-      border-radius: 8px;
-      font-size: 12px;
+      padding: 0 18px;
+      border-radius: 10px;
+      font-size: 13px;
       font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 6px;
+      box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
+      transition: transform 0.15s;
     }
+
+    .paste-btn:active { transform: scale(0.95); }
 
     .clear-btn {
       position: absolute;
-      right: 86px;
-      background: rgba(255, 255, 255, 0.1);
-      color: #94a3b8;
+      right: 100px;
+      background: rgba(255, 255, 255, 0.15);
+      color: #cbd5e1;
       border: none;
-      width: 22px;
-      height: 22px;
+      width: 26px;
+      height: 26px;
       border-radius: 50%;
-      font-size: 11px;
+      font-size: 12px;
+      font-weight: bold;
       cursor: pointer;
       display: none;
       align-items: center;
@@ -197,57 +210,59 @@
     }
 
     .supports-text {
-      font-size: 11px;
+      font-size: 12px;
       color: #94a3b8;
       display: flex;
       align-items: center;
       gap: 6px;
-      margin-bottom: 14px;
+      margin-bottom: 16px;
     }
 
-    .supports-text span.check { color: #10b981; font-weight: bold; }
+    .supports-text span.check { color: #10b981; font-weight: bold; font-size: 14px; }
 
     .btn-fetch {
       width: 100%;
-      padding: 14px;
+      height: 52px;
       border: none;
-      border-radius: 12px;
+      border-radius: 14px;
       background: linear-gradient(135deg, #ec4899, #8b5cf6);
       color: #fff;
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      box-shadow: 0 6px 20px rgba(236, 72, 153, 0.3);
+      box-shadow: 0 8px 24px rgba(236, 72, 153, 0.35);
+      transition: transform 0.15s;
     }
 
     .btn-fetch:active { transform: scale(0.98); }
 
     /* LOADER & RESULT PREVIEW */
-    .loader { display: none; margin-top: 15px; text-align: center; color: #c084fc; font-size: 13px; font-weight: 600; }
-    .result { display: none; margin-top: 15px; }
-    .media-box { width: 100%; max-height: 380px; border-radius: 12px; overflow: hidden; background: #000; margin-bottom: 12px; }
+    .loader { display: none; margin-top: 16px; text-align: center; color: #c084fc; font-size: 14px; font-weight: 600; }
+    .result { display: none; margin-top: 18px; }
+    .media-box { width: 100%; max-height: 380px; border-radius: 14px; overflow: hidden; background: #000; margin-bottom: 14px; border: 1px solid rgba(255, 255, 255, 0.1); }
     video, img { width: 100%; max-height: 380px; object-fit: contain; display: block; }
     
     .btn-download {
       width: 100%;
-      padding: 14px;
+      height: 52px;
       border: none;
-      border-radius: 12px;
-      background: #10b981;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #10b981, #059669);
       color: #fff;
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 700;
       cursor: pointer;
+      box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
     }
 
     /* 3. HOW TO USE CARD */
     .how-card {
-      background: #0f172a;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: #0d1527;
+      border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 20px;
       padding: 18px;
     }
@@ -271,10 +286,10 @@
     }
 
     .step-icon-box {
-      width: 42px;
-      height: 42px;
-      background: #1e293b;
-      border: 1px solid #334155;
+      width: 44px;
+      height: 44px;
+      background: #182339;
+      border: 1px solid #2a3853;
       border-radius: 12px;
       display: flex;
       align-items: center;
@@ -282,6 +297,7 @@
       color: #fff;
       margin-bottom: 8px;
       position: relative;
+      font-size: 18px;
     }
 
     .step-num {
@@ -305,11 +321,11 @@
 
     .steps-line {
       position: absolute;
-      top: 21px;
+      top: 22px;
       left: 10%;
       right: 10%;
       height: 1px;
-      border-top: 2px dashed #334155;
+      border-top: 2px dashed #2a3853;
       z-index: 0;
     }
 
@@ -318,10 +334,10 @@
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 8px;
-      background: #0f172a;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: #0d1527;
+      border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 16px;
-      padding: 14px 8px;
+      padding: 16px 8px;
     }
 
     .feature-box {
@@ -331,7 +347,7 @@
       text-align: center;
     }
 
-    .feature-icon { color: #38bdf8; margin-bottom: 6px; }
+    .feature-icon { font-size: 18px; margin-bottom: 6px; }
     .feature-box h5 { font-size: 10px; font-weight: 700; color: #fff; }
     .feature-box p { font-size: 8px; color: #64748b; margin-top: 2px; }
 
@@ -368,7 +384,7 @@
     <div class="input-card">
       <div class="input-card-header">
         <div class="link-icon-box">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
         </div>
         <div class="input-card-title">
           <h3>Paste Instagram Link</h3>
@@ -582,30 +598,31 @@
       }
     }
 
-    document.getElementById('downloadBtn').addEventListener('click', async () => {
-      const btn = document.getElementById('downloadBtn');
-      const originalText = btn.innerText;
-      btn.innerText = "⏳ Downloading...";
-      btn.disabled = true;
+    // Updated Direct Download Event Listener
+    document.getElementById('downloadBtn').addEventListener('click', () => {
+        if (!currentMediaUrl) {
+            alert("No media available!");
+            return;
+        }
 
-      try {
-        const res = await fetch(currentMediaUrl);
-        const blob = await res.blob();
-        const tempUrl = URL.createObjectURL(blob);
-        
-        const a = document.createElement('a');
-        a.href = tempUrl;
-        a.download = currentMediaType === "image" ? `Instagram_Photo_${Date.now()}.jpg` : `Instagram_Video_${Date.now()}.mp4`;
+        const btn = document.getElementById('downloadBtn');
+        const originalText = btn.innerText;
+
+        btn.innerText = "⏳ Opening...";
+        btn.disabled = true;
+
+        const a = document.createElement("a");
+        a.href = currentMediaUrl;
+        a.target = "_blank";
+        a.rel = "noopener";
         document.body.appendChild(a);
         a.click();
         a.remove();
-        URL.revokeObjectURL(tempUrl);
-      } catch (e) {
-        window.open(currentMediaUrl, '_blank');
-      }
 
-      btn.innerText = originalText;
-      btn.disabled = false;
+        setTimeout(() => {
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }, 1000);
     });
   </script>
 </body>
