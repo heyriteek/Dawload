@@ -36,13 +36,13 @@
   <!-- DASHBOARD FORM -->
   <div id="dashboard" class="hidden">
     <label>RapidAPI Key</label>
-    <input type="text" id="apiKey" placeholder="Paste RapidAPI Key here">
+    <input type="text" id="apiKey" placeholder="9cd65b01aemsh6007cb...">
 
     <label>RapidAPI Host</label>
-    <input type="text" id="apiHost" placeholder="e.g. instagram-downloader-download-instagram-videos-stories1.p.rapidapi.com">
+    <input type="text" id="apiHost" placeholder="instagram-downloader-download-instagram-stories-videos4.p.rapidapi.com">
 
     <label>Notice Banner Message</label>
-    <textarea id="notice" rows="2" placeholder="e.g. Welcome to Ad-Free Downloader!"></textarea>
+    <textarea id="notice" rows="2" placeholder="Clean & Fast Downloader Active!"></textarea>
 
     <button onclick="saveData()">Save Changes</button>
     <button class="logout-btn" onclick="logout()">Logout</button>
@@ -75,7 +75,7 @@
   const auth = firebase.auth();
   const db = firebase.firestore();
 
-  // Auth State Check
+  // Auth State Listener
   auth.onAuthStateChanged((user) => {
     if (user) {
       document.getElementById('login-form').classList.add('hidden');
@@ -114,9 +114,9 @@
   function saveData() {
     const msg = document.getElementById('status-msg');
     db.collection('settings').doc('config').set({
-      apiKey: document.getElementById('apiKey').value,
-      apiHost: document.getElementById('apiHost').value,
-      notice: document.getElementById('notice').value
+      apiKey: document.getElementById('apiKey').value.trim(),
+      apiHost: document.getElementById('apiHost').value.trim(),
+      notice: document.getElementById('notice').value.trim()
     }, { merge: true }).then(() => {
       msg.style.color = '#4ade80';
       msg.innerText = "Settings saved successfully!";
@@ -134,4 +134,3 @@
 </script>
 </body>
 </html>
-
