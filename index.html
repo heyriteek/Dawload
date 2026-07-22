@@ -51,9 +51,16 @@
       width: 100%; 
     }
 
+    .input-wrapper {
+      position: relative;
+      width: 100%;
+      display: flex;
+      align-items: center;
+    }
+
     input { 
       width: 100%; 
-      padding: 14px 16px; 
+      padding: 14px 42px 14px 16px; 
       border-radius: 12px; 
       border: 1px solid #334155; 
       background: #0f172a; 
@@ -66,6 +73,30 @@
     input:focus { 
       border-color: #a855f7; 
       box-shadow: 0 0 12px rgba(168, 85, 247, 0.3); 
+    }
+
+    /* CLEAR BUTTON STYLING */
+    .clear-btn {
+      position: absolute;
+      right: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #94a3b8;
+      border: none;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      display: none; /* Auto-shows when user types */
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .clear-btn:hover {
+      background: #f43f5e;
+      color: #fff;
     }
 
     .btn-fetch { 
@@ -103,7 +134,7 @@
       justify-content: center; 
       align-items: center; 
       width: 100%; 
-      text-decoration: none; 
+      border: none;
       padding: 14px; 
       background: linear-gradient(135deg, #10b981, #059669); 
       color: #fff; 
@@ -111,6 +142,7 @@
       font-weight: 700; 
       border-radius: 12px; 
       box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+      cursor: pointer;
       transition: transform 0.2s;
     }
 
@@ -137,7 +169,10 @@
     <p class="subtitle">Paste Instagram Reel, Video or Photo link below</p>
     
     <div class="input-group">
-      <input type="text" id="instaUrl" placeholder="https://www.instagram.com/reel/...">
+      <div class="input-wrapper">
+        <input type="text" id="instaUrl" placeholder="https://www.instagram.com/reel/..." oninput="toggleClearBtn()">
+        <button id="clearBtn" class="clear-btn" onclick="clearInput()" title="Clear Link">✕</button>
+      </div>
       <button class="btn-fetch" onclick="downloadVideo()">Fetch Media</button>
     </div>
 
@@ -145,7 +180,7 @@
 
     <div id="result" class="result">
       <div id="mediaContainer" class="media-box"></div>
-      <a id="downloadLink" class="btn-download" target="_blank" download="Instagram_Media.mp4">📥 Download File</a>
+      <button id="downloadBtn" class="btn-download">📥 Save File directly</button>
     </div>
   </div>
 
@@ -169,8 +204,9 @@
 
     let apiKey = "";
     let apiHost = "";
+    let currentMediaUrl = "";
+    let currentMediaType = "video";
 
-    // Fetch dynamic config from Firestore
     db.collection('settings').doc('config').get().then((doc) => {
       if (doc.exists) {
         const data = doc.data();
@@ -180,12 +216,30 @@
       }
     });
 
+    // Toggle Clear (✕) Button visibility based on input length
+    function toggleClearBtn() {
+      const input = document.getElementById('instaUrl');
+      const clearBtn = document.getElementById('clearBtn');
+      clearBtn.style.display = input.value.length > 0 ? "flex" : "none";
+    }
+
+    // Clear Input and Reset Preview
+    function clearInput() {
+      const input = document.getElementById('instaUrl');
+      input.value = "";
+      toggleClearBtn();
+      input.focus();
+      
+      // Hide preview area
+      document.getElementById('result').style.display = "none";
+      document.getElementById('mediaContainer').innerHTML = "";
+    }
+
     async function downloadVideo() {
       const url = document.getElementById('instaUrl').value.trim();
       const loader = document.getElementById('loader');
       const result = document.getElementById('result');
       const mediaContainer = document.getElementById('mediaContainer');
-      const downloadLink = document.getElementById('downloadLink');
 
       if (!url) return alert("Please paste an Instagram URL!");
       if (!apiKey || !apiHost) return alert("System setup pending from Admin Panel!");
@@ -212,17 +266,15 @@
         }
 
         if (mediaItem && mediaItem.url) {
-          const finalUrl = mediaItem.url;
-          
-          if (mediaItem.type === "image") {
-            mediaContainer.innerHTML = `<img src="${finalUrl}" alt="Instagram Post">`;
-            downloadLink.setAttribute('download', 'Instagram_Photo.jpg');
+          currentMediaUrl = mediaItem.url;
+          currentMediaType = mediaItem.type || "video";
+
+          if (currentMediaType === "image") {
+            mediaContainer.innerHTML = `<img src="${currentMediaUrl}" alt="Instagram Post">`;
           } else {
-            mediaContainer.innerHTML = `<video src="${finalUrl}" controls autoplay muted></video>`;
-            downloadLink.setAttribute('download', 'Instagram_Video.mp4');
+            mediaContainer.innerHTML = `<video src="${currentMediaUrl}" controls autoplay muted></video>`;
           }
 
-          downloadLink.href = finalUrl;
           result.style.display = "block";
         } else {
           alert("Could not fetch media. Make sure the link is public!");
@@ -232,6 +284,33 @@
         alert("Error fetching media. Check API limits or URL.");
       }
     }
+
+    // Direct One-Click Force Download Function
+    document.getElementById('downloadBtn').addEventListener('click', async () => {
+      const btn = document.getElementById('downloadBtn');
+      const originalText = btn.innerText;
+      btn.innerText = "⏳ Downloading...";
+      btn.disabled = true;
+
+      try {
+        const res = await fetch(currentMediaUrl);
+        const blob = await res.blob();
+        const tempUrl = URL.createObjectURL(blob);
+        
+        const a = document.createElement('a');
+        a.href = tempUrl;
+        a.download = currentMediaType === "image" ? `Instagram_Photo_${Date.now()}.jpg` : `Instagram_Video_${Date.now()}.mp4`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(tempUrl);
+      } catch (e) {
+        window.open(currentMediaUrl, '_blank');
+      }
+
+      btn.innerText = originalText;
+      btn.disabled = false;
+    });
   </script>
 </body>
 </html>
