@@ -2,188 +2,781 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Panel - Insta Downloader</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Insta Downloader Pro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
   <style>
-    * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    body { background: #0f172a; color: #fff; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-    .card { background: #1e293b; padding: 25px; border-radius: 12px; width: 100%; max-width: 450px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
-    h2 { text-align: center; margin-top: 0; color: #38bdf8; }
-    label { font-size: 14px; color: #94a3b8; display: block; margin-top: 15px; margin-bottom: 5px; }
-    input, textarea { width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #fff; font-size: 14px; }
-    button { width: 100%; padding: 12px; border: none; border-radius: 6px; background: #0284c7; color: #fff; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 20px; transition: 0.2s; }
-    button:hover { background: #0369a1; }
-    .hidden { display: none; }
-    .msg { margin-top: 15px; text-align: center; font-size: 14px; font-weight: bold; }
-    .logout-btn { background: #dc2626; margin-top: 10px; }
-    .logout-btn:hover { background: #b91c1c; }
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    body { 
+      background: #030712; 
+      color: #f8fafc; 
+      min-height: 100vh; 
+      display: flex; 
+      justify-content: center;
+      align-items: center; 
+      padding: 20px 12px; 
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    .app-wrapper {
+      width: 100%;
+      max-width: 460px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin: 0 auto;
+    }
+
+    @media (min-width: 768px) {
+      body { padding: 40px 0; }
+      .app-wrapper { max-width: 480px; }
+    }
+
+    /* 1. ULTRA PRO 3D GLOW SLIDER */
+    .carousel-container {
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 16px 35px rgba(0, 0, 0, 0.7);
+      background: #090d16;
+    }
+
+    .carousel-track {
+      display: flex;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      width: 100%;
+    }
+
+    .slide {
+      min-width: 100%;
+      padding: 24px 22px 28px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slide-1 { background: radial-gradient(circle at top right, #1e1b4b, #090d16); }
+    .slide-2 { background: radial-gradient(circle at top right, #831843, #090d16); }
+    .slide-3 { background: radial-gradient(circle at top right, #082f49, #090d16); }
+    .slide-4 { background: radial-gradient(circle at top right, #064e3b, #090d16); }
+    .slide-5 { background: radial-gradient(circle at top right, #581c87, #090d16); }
+    .slide-6 { background: radial-gradient(circle at top right, #78350f, #090d16); }
+    .slide-7 { background: radial-gradient(circle at top right, #312e81, #090d16); }
+    .slide-8 { background: radial-gradient(circle at top right, #134e4a, #090d16); }
+
+    .hero-text { max-width: 65%; z-index: 2; }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: #c084fc;
+      margin-bottom: 8px;
+    }
+
+    .hero-text h2 {
+      font-size: 21px;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.25;
+      letter-spacing: -0.3px;
+    }
+
+    .hero-text h2 span {
+      background: linear-gradient(135deg, #f472b6, #a855f7, #38bdf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-text p {
+      font-size: 11px;
+      color: #94a3b8;
+      margin-top: 6px;
+      line-height: 1.4;
+      font-weight: 500;
+    }
+
+    .hero-illustration {
+      position: relative;
+      width: 78px;
+      height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+    }
+
+    .hero-insta-box {
+      width: 68px;
+      height: 68px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.5);
+      animation: floatGlow 3.5s infinite ease-in-out;
+    }
+
+    @keyframes floatGlow {
+      0%, 100% { transform: translateY(0px) rotate(0deg); box-shadow: 0 10px 20px rgba(168, 85, 247, 0.2); }
+      50% { transform: translateY(-6px) rotate(4deg); box-shadow: 0 18px 30px rgba(168, 85, 247, 0.4); }
+    }
+
+    .carousel-dots {
+      position: absolute;
+      bottom: 10px;
+      left: 22px;
+      display: flex;
+      gap: 6px;
+      z-index: 10;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      transition: all 0.3s ease;
+    }
+
+    .dot.active {
+      width: 20px;
+      background: linear-gradient(135deg, #ec4899, #a855f7);
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(168, 85, 247, 0.8);
+    }
+
+    /* 2. INPUT CARD & ALIGNMENT FIX */
+    .input-card {
+      background: #0d1527;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 22px;
+      padding: 20px 18px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.7);
+    }
+
+    .input-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .link-icon-box {
+      width: 42px;
+      height: 42px;
+      background: rgba(168, 85, 247, 0.2);
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #d8b4fe;
+    }
+
+    .input-card-title h3 { font-size: 16px; font-weight: 700; color: #fff; }
+    .input-card-title p { font-size: 12px; color: #94a3b8; }
+
+    .input-box-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    input {
+      width: 100%;
+      height: 58px;
+      padding: 0 125px 0 16px;
+      background: #070c18;
+      border: 1.5px solid #2a3853;
+      border-radius: 14px;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 500;
+      outline: none;
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+
+    input::placeholder { color: #64748b; }
+    input:focus { 
+      border-color: #a855f7; 
+      box-shadow: 0 0 14px rgba(168, 85, 247, 0.3);
+    }
+
+    .paste-btn {
+      position: absolute;
+      right: 8px;
+      height: 42px;
+      background: linear-gradient(135deg, #a855f7, #8b5cf6);
+      color: #fff;
+      border: none;
+      padding: 0 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
+      transition: transform 0.15s;
+      z-index: 2;
+    }
+
+    .paste-btn:active { transform: scale(0.95); }
+
+    .clear-btn {
+      position: absolute;
+      right: 98px;
+      background: rgba(255, 255, 255, 0.15);
+      color: #cbd5e1;
+      border: none;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      font-size: 11px;
+      font-weight: bold;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 3;
+    }
+
+    .supports-text {
+      font-size: 12px;
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .supports-text span.check { color: #10b981; font-weight: bold; font-size: 14px; }
+
+    .btn-fetch {
+      width: 100%;
+      height: 52px;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #ec4899, #8b5cf6);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 8px 24px rgba(236, 72, 153, 0.35);
+      transition: transform 0.15s;
+    }
+
+    .btn-fetch:active { transform: scale(0.98); }
+
+    .loader { display: none; margin-top: 16px; text-align: center; color: #c084fc; font-size: 14px; font-weight: 600; }
+    .result { display: none; margin-top: 18px; }
+    .media-box { width: 100%; max-height: 380px; border-radius: 14px; overflow: hidden; background: #000; margin-bottom: 14px; border: 1px solid rgba(255, 255, 255, 0.1); }
+    video, img { width: 100%; max-height: 380px; object-fit: contain; display: block; margin: 0 auto; }
+    
+    .btn-download {
+      width: 100%;
+      height: 52px;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
+    }
+
+    /* 3. HOW TO USE CARD */
+    .how-card {
+      background: #0d1527;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 18px;
+    }
+
+    .how-card h3 { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 16px; text-align: left; }
+
+    .steps-grid {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    .step-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      width: 22%;
+      z-index: 1;
+    }
+
+    .step-icon-box {
+      width: 44px;
+      height: 44px;
+      background: #182339;
+      border: 1px solid #2a3853;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      margin-bottom: 8px;
+      position: relative;
+      font-size: 18px;
+    }
+
+    .step-num {
+      position: absolute;
+      bottom: -6px;
+      left: -4px;
+      width: 18px;
+      height: 18px;
+      background: #a855f7;
+      color: #fff;
+      border-radius: 50%;
+      font-size: 10px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .step-item h4 { font-size: 11px; font-weight: 700; color: #fff; margin-bottom: 3px; }
+    .step-item p { font-size: 9px; color: #64748b; line-height: 1.2; }
+
+    .steps-line {
+      position: absolute;
+      top: 22px;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      border-top: 2px dashed #2a3853;
+      z-index: 0;
+    }
+
+    /* 4. FEATURES GRID */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .feature-card {
+      background: linear-gradient(145deg, #0e172a, #090e1a);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      padding: 16px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+    }
+
+    .feature-card-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .icon-hd { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); animation: iconBounce 2.5s infinite ease-in-out; }
+    .icon-speed { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); animation: iconBounce 2.5s infinite ease-in-out 0.3s; }
+    .icon-secure { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); animation: iconBounce 2.5s infinite ease-in-out 0.6s; }
+    .icon-clean { background: rgba(236, 72, 153, 0.15); color: #f472b6; border: 1px solid rgba(236, 72, 153, 0.3); animation: iconBounce 2.5s infinite ease-in-out 0.9s; }
+
+    @keyframes iconBounce {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.12); }
+    }
+
+    .feature-info h5 { font-size: 13px; font-weight: 700; color: #ffffff; }
+    .feature-info p { font-size: 10px; color: #8294b0; margin-top: 3px; }
+
+    .hidden-notice { display: none !important; }
   </style>
 </head>
 <body>
 
-<div class="card">
-  <h2>Admin Panel</h2>
+  <div id="notice-banner" class="hidden-notice"></div>
 
-  <!-- LOGIN FORM -->
-  <div id="login-form">
-    <label>Admin Email</label>
-    <input type="email" id="email" placeholder="mrriteek82@gmail.com">
-    <label>Password</label>
-    <input type="password" id="password" placeholder="••••••••">
-    <button onclick="login()">Login</button>
+  <div class="app-wrapper">
+
+    <!-- 1. ULTRA PRO 8 AUTO-SCROLL SLIDES -->
+    <div class="carousel-container">
+      <div class="carousel-track" id="carouselTrack">
+        
+        <div class="slide slide-1">
+          <div class="hero-text">
+            <span class="hero-tag">🔥 Trending</span>
+            <h2>Download<br><span>Instagram Reels</span></h2>
+            <p>Save trending reels in original HD quality.</p>
+          </div>
+          <div class="hero-illustration"><div class="hero-insta-box">🎬</div></div>
+        </div>
+
+        <div class="slide slide-2">
+          <div class="hero-text">
+            <span class="hero-tag">📸 Full Quality</span>
+            <h2>Photos &<br><span>Post Carousels</span></h2>
+            <p>Download multiple photos with single click.</p>
+          </div>
+          <div class="hero-illustration"><div class="hero-insta-box">🖼️</div></div>
+        </div>
+
+        <div class="slide slide-3">
+          <div class="hero-text">
+            <span class="hero-tag">⚡ Ultra Fast</span>
+            <h2>High Speed<br><span>Servers</span></h2>
+            <p>Instant media conversion & high speed link.</p>
+          </div>
+          <div class="hero-illustration"><div class="hero-insta-box">⚡</div></div>
+        </div>
+
+        <div class="slide slide-4">
+          <div class="hero-text">
+            <span class="hero-tag">💎 100% Free</span>
+            <h2>Unlimited<br><span>Downloads</span></h2>
+            <p>No login or subscription required.</p>
+          </div>
+          <div class="hero-illustration"><div class="hero-insta-box">💎</div></div>
+        </div>
+
+        <div class="slide slide-5">
+          <div class="hero-text">
+            <span class="hero-tag">🎵 Audio Sync</span>
+            <h2>Original<br><span>Audio & Video</span></h2>
+            <p>Extract clear audio along with HD video.</p>
+          </div>
+          <div class="hero-illustration"><div class="hero-insta-box">🎵</div></div>
+        </div>
+
+        <div class="slide slide-6">
+          <div class="hero-text">
+            <span class="hero-tag">🪄 Clean File</span>
+            <h2>No Watermark<br><span>Ever</span></h2>
+            <p>Clean videos saved directly to gallery.</p>
+          </div>
+          <div class="hero-illustration"><div class="hero-insta-box">🪄</div></div>
+        </div>
+
+        <div class="slide slide-7">
+          <div class="hero-text">
+            <span class="hero-tag">🛡️ Encrypted</span>
+            <h2>Safe &<br><span>Anonymous</span></h2>
+            <p>Your requests are private & protected.</p>
+          </div>
+          <div class="hero-illustration"><div class="hero-insta-box">🛡️</div></div>
+        </div>
+
+        <div class="slide slide-8">
+          <div class="hero-text">
+            <span class="hero-tag">📺 1080p HD</span>
+            <h2>IGTV &<br><span>Stories</span></h2>
+            <p>Full length HD video downloading.</p>
+          </div>
+          <div class="hero-illustration"><div class="hero-insta-box">📺</div></div>
+        </div>
+
+      </div>
+
+      <div class="carousel-dots">
+        <span class="dot active"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+    </div>
+
+    <!-- 2. INPUT CARD -->
+    <div class="input-card">
+      <div class="input-card-header">
+        <div class="link-icon-box">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+        </div>
+        <div class="input-card-title">
+          <h3>Paste Instagram Link</h3>
+          <p>We'll fetch your media safely</p>
+        </div>
+      </div>
+
+      <div class="input-box-wrap">
+        <input type="text" id="instaUrl" placeholder="Paste Instagram link here..." oninput="toggleClearBtn()">
+        <button id="clearBtn" class="clear-btn" onclick="clearInput()">✕</button>
+        <button id="pasteBtn" class="paste-btn" onclick="pasteClipboard()">📋 Paste</button>
+      </div>
+
+      <div class="supports-text">
+        <span class="check">✓</span> Supports: Reels • Videos • Photos • IGTV
+      </div>
+
+      <button class="btn-fetch" onclick="downloadVideo()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+        Fetch Media
+      </button>
+
+      <div id="loader" class="loader">⚡ Securing High Speed Link...</div>
+
+      <div id="result" class="result">
+        <div id="mediaContainer" class="media-box"></div>
+        <button id="downloadBtn" class="btn-download">📥 Download File</button>
+      </div>
+    </div>
+
+    <!-- 3. HOW TO USE CARD -->
+    <div class="how-card">
+      <h3>How to use?</h3>
+      <div class="steps-grid">
+        <div class="steps-line"></div>
+        <div class="step-item"><div class="step-icon-box">🔗<span class="step-num">1</span></div><h4>Copy link</h4><p>Copy content link</p></div>
+        <div class="step-item"><div class="step-icon-box">📋<span class="step-num">2</span></div><h4>Paste link</h4><p>Paste in the box</p></div>
+        <div class="step-item"><div class="step-icon-box">⚡<span class="step-num">3</span></div><h4>Fetch</h4><p>Get media link</p></div>
+        <div class="step-item"><div class="step-icon-box">📥<span class="step-num">4</span></div><h4>Download</h4><p>Save in HD</p></div>
+      </div>
+    </div>
+
+    <!-- 4. FEATURES GRID -->
+    <div class="features-grid">
+      <div class="feature-card"><div class="feature-card-icon icon-hd">💎</div><div class="feature-info"><h5>Ultra HD</h5><p>Best resolution</p></div></div>
+      <div class="feature-card"><div class="feature-card-icon icon-speed">⚡</div><div class="feature-info"><h5>Fast Speed</h5><p>Instant fetch</p></div></div>
+      <div class="feature-card"><div class="feature-card-icon icon-secure">🛡️</div><div class="feature-info"><h5>Encrypted</h5><p>Protected API</p></div></div>
+      <div class="feature-card"><div class="feature-card-icon icon-clean">🪄</div><div class="feature-info"><h5>Clean File</h5><p>No watermark</p></div></div>
+    </div>
+
   </div>
 
-  <!-- DASHBOARD FORM -->
-  <div id="dashboard" class="hidden">
-    <label>RapidAPI Key</label>
-    <input type="text" id="apiKey" placeholder="9cd65b01aemsh6007cb...">
+  <!-- FIREBASE SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
-    <label>RapidAPI Host</label>
-    <input type="text" id="apiHost" placeholder="instagram-downloader-download-instagram-stories-videos4.p.rapidapi.com">
+  <script>
+    // AUTO SLIDER SCRIPT
+    let currentSlide = 0;
+    const track = document.getElementById('carouselTrack');
+    const dots = document.querySelectorAll('.dot');
 
-    <label>Notice Banner Message</label>
-    <textarea id="notice" rows="2" placeholder="Clean & Fast Downloader Active!"></textarea>
-
-    <button onclick="saveData()">Save Changes</button>
-    <button class="logout-btn" onclick="logout()">Logout</button>
-  </div>
-
-  <div id="status-msg" class="msg"></div>
-</div>
-
-<!-- FIREBASE SDKs -->
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-
-<script>
-  // FIREBASE CONFIG (Updated)
-  const firebaseConfig = {
-    apiKey: "AIzaSyAMk0VFAi54nYovyErqfFD0KPmRelM8Uvg",
-    authDomain: "dawload-8b47d.firebaseapp.com",
-    databaseURL: "https://dawload-8b47d-default-rtdb.firebaseio.com",
-    projectId: "dawload-8b47d",
-    storageBucket: "dawload-8b47d.firebasestorage.app",
-    messagingSenderId: "504882478942",
-    appId: "1:504882478942:web:24d8fea2edf0f7ebf559cf",
-    measurementId: "G-1BHK6JJBLV"
-  };
-  
-  // Single initialization check
-  if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
-  }
-  
-  const auth = firebase.auth();
-  const db = firebase.firestore();
-
-  // Helper for user-friendly error messages
-  function getFriendlyErrorMessage(error) {
-    if (!error || !error.code) return error.message || "An unexpected error occurred.";
-    switch (error.code) {
-      case 'auth/api-key-not-valid':
-        return "Invalid API Key. Please verify your Firebase configuration.";
-      case 'auth/user-not-found':
-      case 'auth/wrong-password':
-      case 'auth/invalid-credential':
-        return "Invalid email or password. Please try again.";
-      case 'auth/invalid-email':
-        return "Please enter a valid email address.";
-      case 'auth/user-disabled':
-        return "This account has been disabled.";
-      case 'auth/too-many-requests':
-        return "Too many failed attempts. Please try again later.";
-      case 'auth/network-request-failed':
-        return "Network error. Please check your internet connection.";
-      default:
-        return error.message;
+    function moveCarousel() {
+      if (!dots.length) return;
+      currentSlide = (currentSlide + 1) % dots.length;
+      track.style.transform = `translateX(-${currentSlide * 100}%)`;
+      dots.forEach((dot, index) => dot.classList.toggle('active', index === currentSlide));
     }
-  }
+    setInterval(moveCarousel, 3000);
 
-  // Auth State Listener
-  auth.onAuthStateChanged((user) => {
-    if (user) {
-      document.getElementById('login-form').classList.add('hidden');
-      document.getElementById('dashboard').classList.remove('hidden');
-      loadSettings();
-    } else {
-      document.getElementById('login-form').classList.remove('hidden');
-      document.getElementById('dashboard').classList.add('hidden');
-    }
-  });
+    // FIREBASE SETUP
+    const firebaseConfig = {
+      apiKey: "AIzaSyAMk0VFAi54nYovyErqfFD06x-vHlh1m9c",
+      authDomain: "dawload-8b47d.firebaseapp.com",
+      projectId: "dawload-8b47d",
+      storageBucket: "dawload-8b47d.firebasestorage.app",
+      messagingSenderId: "504882478942",
+      appId: "1:504882478942:web:24d8fea2edf0f7ebf559cf",
+      measurementId: "G-1BHK6JJBLV"
+    };
 
-  // Login
-  function login() {
-    const e = document.getElementById('email').value.trim();
-    const p = document.getElementById('password').value;
-    const msg = document.getElementById('status-msg');
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
-    if (!e || !p) {
-      msg.style.color = '#f87171';
-      msg.innerText = "Please enter both email and password.";
-      return;
-    }
-    
-    msg.style.color = '#38bdf8';
-    msg.innerText = "Logging in...";
-
-    auth.signInWithEmailAndPassword(e, p)
-      .then(() => { 
-        msg.style.color = '#4ade80'; 
-        msg.innerText = "Login Successful!"; 
-      })
-      .catch((err) => { 
-        msg.style.color = '#f87171'; 
-        msg.innerText = getFriendlyErrorMessage(err); 
-      });
-  }
-
-  // Load Settings from Firestore
-  function loadSettings() {
-    const msg = document.getElementById('status-msg');
+    let apiKey = "";
+    let apiHost = "";
+    let rawMediaUrl = "";
+           // FETCH CONFIG FROM FIREBASE
     db.collection('settings').doc('config').get().then((doc) => {
       if (doc.exists) {
         const data = doc.data();
-        document.getElementById('apiKey').value = data.apiKey || '';
-        document.getElementById('apiHost').value = data.apiHost || '';
-        document.getElementById('notice').value = data.notice || '';
+        apiKey = data.apiKey;
+        apiHost = data.apiHost;
       }
-    }).catch((err) => {
-      msg.style.color = '#f87171';
-      msg.innerText = "Failed to load settings: " + getFriendlyErrorMessage(err);
     });
-  }
 
-  // Save Settings to Firestore
-  function saveData() {
-    const msg = document.getElementById('status-msg');
-    msg.style.color = '#38bdf8';
-    msg.innerText = "Saving changes...";
+    function toggleClearBtn() {
+      const input = document.getElementById('instaUrl');
+      document.getElementById('clearBtn').style.display = input.value.length > 0 ? "flex" : "none";
+    }
 
-    db.collection('settings').doc('config').set({
-      apiKey: document.getElementById('apiKey').value.trim(),
-      apiHost: document.getElementById('apiHost').value.trim(),
-      notice: document.getElementById('notice').value.trim()
-    }, { merge: true }).then(() => {
-      msg.style.color = '#4ade80';
-      msg.innerText = "Settings saved successfully!";
-      setTimeout(() => { if (msg.innerText === "Settings saved successfully!") msg.innerText = ""; }, 3000);
-    }).catch((err) => {
-      msg.style.color = '#f87171';
-      msg.innerText = getFriendlyErrorMessage(err);
+    async function pasteClipboard() {
+      try {
+        if (navigator.clipboard && navigator.clipboard.readText) {
+          const text = await navigator.clipboard.readText();
+          if (text) {
+            document.getElementById('instaUrl').value = text;
+            toggleClearBtn();
+          }
+        }
+      } catch (err) {}
+    }
+
+    function clearInput() {
+      const input = document.getElementById('instaUrl');
+      input.value = "";
+      toggleClearBtn();
+      input.focus();
+      document.getElementById('result').style.display = "none";
+      document.getElementById('mediaContainer').innerHTML = "";
+    }
+
+    // UPDATED ADVANCED MEDIA FETCHING LOGIC
+    async function downloadVideo() {
+      const url = document.getElementById('instaUrl').value.trim();
+      const loader = document.getElementById('loader');
+      const result = document.getElementById('result');
+      const mediaContainer = document.getElementById('mediaContainer');
+
+      if (!url) return alert("Please paste an Instagram URL!");
+      if (!apiKey || !apiHost) return alert("System initialising... Please try again.");
+
+      loader.style.display = "block";
+      result.style.display = "none";
+      mediaContainer.innerHTML = "";
+
+      try {
+        const apiUrl = `https://${apiHost}/unified/url?url=${encodeURIComponent(url)}`;
+
+        const response = await fetch(apiUrl, {
+          method: 'GET',
+          headers: {
+            'x-rapidapi-key': apiKey,
+            'x-rapidapi-host': apiHost
+          }
+        });
+        
+        const resData = await response.json();
+        console.log("RapidAPI Response:", resData);
+        loader.style.display = "none";
+
+        let fetchedUrl = "";
+
+        // Comprehensive parsing logic to handle all possible response structures
+        if (resData) {
+          if (typeof resData === 'string' && resData.startsWith('http')) {
+            fetchedUrl = resData;
+          } else if (resData.url) {
+            fetchedUrl = resData.url;
+          } else if (resData.link) {
+            fetchedUrl = resData.link;
+          } else if (resData.download_url) {
+            fetchedUrl = resData.download_url;
+          } else if (resData.media && typeof resData.media === 'string') {
+            fetchedUrl = resData.media;
+          } else if (Array.isArray(resData) && resData[0]) {
+            fetchedUrl = resData[0].url || resData[0].link || resData[0];
+          } else if (resData.result) {
+            if (Array.isArray(resData.result) && resData.result[0]) {
+              fetchedUrl = resData.result[0].url || resData.result[0];
+            } else if (typeof resData.result === 'string') {
+              fetchedUrl = resData.result;
+            }
+          } else if (resData.data) {
+            if (Array.isArray(resData.data) && resData.data[0]) {
+              fetchedUrl = resData.data[0].url || resData.data[0].media_url;
+            } else if (resData.data.items && resData.data.items[0]) {
+              fetchedUrl = resData.data.items[0].media_url || resData.data.items[0].url;
+            } else if (typeof resData.data === 'string') {
+              fetchedUrl = resData.data;
+            }
+          }
+        }
+
+        if (fetchedUrl) {
+          rawMediaUrl = fetchedUrl;
+
+          const isImage = (rawMediaUrl.includes('.jpg') || rawMediaUrl.includes('.webp') || rawMediaUrl.includes('.png'));
+
+          if (isImage) {
+            mediaContainer.innerHTML = `<img src="${rawMediaUrl}" alt="Media Content">`;
+          } else {
+            mediaContainer.innerHTML = `<video src="${rawMediaUrl}" controls autoplay muted></video>`;
+          }
+
+          result.style.display = "block";
+        } else {
+          alert("Could not fetch media. Please check if link is public or try another Reel!");
+        }
+      } catch (err) {
+        console.error("Fetch Error:", err);
+        loader.style.display = "none";
+        alert("API Error / CORS block. Try again!");
+      }
+    }
+
+    // BLOB DOWNLOAD HANDLER
+    document.getElementById('downloadBtn').addEventListener('click', async () => {
+      if (!rawMediaUrl) return alert("No file to download!");
+
+      const btn = document.getElementById('downloadBtn');
+      const oldText = btn.innerText;
+
+      btn.innerText = "⏳ Downloading...";
+      btn.disabled = true;
+
+      try {
+        const response = await fetch(rawMediaUrl);
+        const blob = await response.blob();
+        
+        const blobUrl = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = blobUrl;
+        a.download = `Instagram_Media_${Date.now()}.${blob.type.includes('image') ? 'jpg' : 'mp4'}`;
+        
+        document.body.appendChild(a);
+        a.click();
+        
+        window.URL.revokeObjectURL(blobUrl);
+        a.remove();
+      } catch (err) {
+        window.open(rawMediaUrl, '_blank');
+      } finally {
+        btn.innerText = oldText;
+        btn.disabled = false;
+      }
     });
-  }
-
-  // Logout
-  function logout() {
-    const msg = document.getElementById('status-msg');
-    auth.signOut().then(() => {
-      msg.innerText = "";
-    }).catch((err) => {
-      msg.style.color = '#f87171';
-      msg.innerText = getFriendlyErrorMessage(err);
-    });
-  }
-</script>
+  </script>
 </body>
 </html>
