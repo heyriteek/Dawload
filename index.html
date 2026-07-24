@@ -626,8 +626,9 @@
     let apiKey = "";
     let apiHost = "";
     let rawMediaUrl = "";
-           // FETCH CONFIG FROM FIREBASE
-    db.collection('settings').doc('config').get().then((doc) => {
+
+    // FETCH CONFIG FROM FIREBASE
+   db.collection('settings').doc('config').get().then((doc) => {
       if (doc.exists) {
         const data = doc.data();
         apiKey = data.apiKey;
@@ -661,7 +662,7 @@
       document.getElementById('mediaContainer').innerHTML = "";
     }
 
-    // UPDATED ADVANCED MEDIA FETCHING LOGIC
+    // 🚀 ULTRA-SMART RECURSIVE MEDIA RESOLVER
     async function downloadVideo() {
       const url = document.getElementById('instaUrl').value.trim();
       const loader = document.getElementById('loader');
@@ -687,40 +688,31 @@
         });
         
         const resData = await response.json();
-        console.log("RapidAPI Response:", resData);
+        console.log("RapidAPI Full Response:", resData);
         loader.style.display = "none";
 
-        let fetchedUrl = "";
-
-        // Comprehensive parsing logic to handle all possible response structures
-        if (resData) {
-          if (typeof resData === 'string' && resData.startsWith('http')) {
-            fetchedUrl = resData;
-          } else if (resData.url) {
-            fetchedUrl = resData.url;
-          } else if (resData.link) {
-            fetchedUrl = resData.link;
-          } else if (resData.download_url) {
-            fetchedUrl = resData.download_url;
-          } else if (resData.media && typeof resData.media === 'string') {
-            fetchedUrl = resData.media;
-          } else if (Array.isArray(resData) && resData[0]) {
-            fetchedUrl = resData[0].url || resData[0].link || resData[0];
-          } else if (resData.result) {
-            if (Array.isArray(resData.result) && resData.result[0]) {
-              fetchedUrl = resData.result[0].url || resData.result[0];
-            } else if (typeof resData.result === 'string') {
-              fetchedUrl = resData.result;
-            }
-          } else if (resData.data) {
-            if (Array.isArray(resData.data) && resData.data[0]) {
-              fetchedUrl = resData.data[0].url || resData.data[0].media_url;
-            } else if (resData.data.items && resData.data.items[0]) {
-              fetchedUrl = resData.data.items[0].media_url || resData.data.items[0].url;
-            } else if (typeof resData.data === 'string') {
-              fetchedUrl = resData.data;
+        function findMediaUrl(obj) {
+          if (!obj) return null;
+          if (typeof obj === 'string' && obj.startsWith('http') && (obj.includes('cdninstagram') || obj.includes('.mp4') || obj.includes('.jpg') || obj.includes('fbcdn'))) {
+            return obj;
+          }
+          if (typeof obj === 'object') {
+            for (let key in obj) {
+              if (obj.hasOwnProperty(key)) {
+                let found = findMediaUrl(obj[key]);
+                if (found) return found;
+              }
             }
           }
+          return null;
+        }
+
+        let fetchedUrl = findMediaUrl(resData);
+
+        if (!fetchedUrl && resData) {
+          if (typeof resData === 'string' && resData.startsWith('http')) fetchedUrl = resData;
+          else if (resData.url) fetchedUrl = resData.url;
+          else if (resData.link) fetchedUrl = resData.link;
         }
 
         if (fetchedUrl) {
@@ -736,17 +728,17 @@
 
           result.style.display = "block";
         } else {
-          alert("Could not fetch media. Please check if link is public or try another Reel!");
+          alert("Could not fetch media. Please check RapidAPI key limits or try another link!");
         }
       } catch (err) {
         console.error("Fetch Error:", err);
         loader.style.display = "none";
-        alert("API Error / CORS block. Try again!");
+        alert("API Response Error. Check console logs!");
       }
     }
 
-    // BLOB DOWNLOAD HANDLER
-    document.getElementById('downloadBtn').addEventListener('click', async () => {
+    // 📱 UNIVERSAL DIRECT DISPATCH DOWNLOAD HANDLER (CORS FREE & KODULAR APP READY)
+    document.getElementById('downloadBtn').addEventListener('click', () => {
       if (!rawMediaUrl) return alert("No file to download!");
 
       const btn = document.getElementById('downloadBtn');
@@ -755,27 +747,23 @@
       btn.innerText = "⏳ Downloading...";
       btn.disabled = true;
 
-      try {
-        const response = await fetch(rawMediaUrl);
-        const blob = await response.blob();
-        
-        const blobUrl = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.style.display = 'none';
-        a.href = blobUrl;
-        a.download = `Instagram_Media_${Date.now()}.${blob.type.includes('image') ? 'jpg' : 'mp4'}`;
-        
-        document.body.appendChild(a);
-        a.click();
-        
-        window.URL.revokeObjectURL(blobUrl);
-        a.remove();
-      } catch (err) {
-        window.open(rawMediaUrl, '_blank');
-      } finally {
+      const fileName = `Insta_Media_${Date.now()}.${rawMediaUrl.includes('.jpg') ? 'jpg' : 'mp4'}`;
+
+      // Direct anchor dispatch triggers WebView's OnDownloadStart in Kodular or direct file fetch in browsers
+      const a = document.createElement('a');
+      a.href = rawMediaUrl;
+      a.setAttribute('download', fileName);
+      a.setAttribute('target', '_blank');
+      a.setAttribute('rel', 'noopener noreferrer');
+      
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+
+      setTimeout(() => {
         btn.innerText = oldText;
         btn.disabled = false;
-      }
+      }, 1500);
     });
   </script>
 </body>
