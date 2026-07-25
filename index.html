@@ -628,7 +628,7 @@
     let rawMediaUrl = "";
 
     // FETCH CONFIG FROM FIREBASE
-   db.collection('settings').doc('config').get().then((doc) => {
+    db.collection('settings').doc('config').get().then((doc) => {
       if (doc.exists) {
         const data = doc.data();
         apiKey = data.apiKey;
@@ -737,8 +737,8 @@
       }
     }
 
-    // 📱 UNIVERSAL DIRECT DISPATCH DOWNLOAD HANDLER (CORS FREE & KODULAR APP READY)
-    document.getElementById('downloadBtn').addEventListener('click', () => {
+    // 💎 PRO-LEVEL BLOB & PROXY FORCE DOWNLOAD HANDLER (PREVENTS VIDEO PLAYER REDIRECT)
+    document.getElementById('downloadBtn').addEventListener('click', async () => {
       if (!rawMediaUrl) return alert("No file to download!");
 
       const btn = document.getElementById('downloadBtn');
@@ -747,24 +747,55 @@
       btn.innerText = "⏳ Downloading...";
       btn.disabled = true;
 
-      const fileName = `Insta_Media_${Date.now()}.${rawMediaUrl.includes('.jpg') ? 'jpg' : 'mp4'}`;
+      const fileExt = (rawMediaUrl.includes('.jpg') || rawMediaUrl.includes('.webp') || rawMediaUrl.includes('.png')) ? 'jpg' : 'mp4';
+      const fileName = `Insta_Media_${Date.now()}.${fileExt}`;
 
-      // Direct anchor dispatch triggers WebView's OnDownloadStart in Kodular or direct file fetch in browsers
+      try {
+        // Attempt 1: Direct Fetch Stream Blob
+        let response = await fetch(rawMediaUrl);
+        if (!response.ok) throw new Error('Direct fetch failed');
+        let blob = await response.blob();
+        triggerBlobDownload(blob, fileName);
+      } catch (err1) {
+        try {
+          // Attempt 2: Free Secure Proxy Bypass for Instagram CDN CORS Restrictions
+          let proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(rawMediaUrl)}`;
+          let response = await fetch(proxyUrl);
+          if (!response.ok) throw new Error('Proxy fetch failed');
+          let blob = await response.blob();
+          triggerBlobDownload(blob, fileName);
+        } catch (err2) {
+          // Attempt 3: Ultimate App & Browser Fallback (For Kodular OnDownloadStart or Direct Link)
+          const a = document.createElement('a');
+          a.href = rawMediaUrl;
+          a.setAttribute('download', fileName);
+          a.setAttribute('target', '_self');
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+        }
+      } finally {
+        setTimeout(() => {
+          btn.innerText = oldText;
+          btn.disabled = false;
+        }, 1500);
+      }
+    });
+
+    // Helper function to force clean local download blob
+    function triggerBlobDownload(blob, fileName) {
+      const blobUrl = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
-      a.href = rawMediaUrl;
-      a.setAttribute('download', fileName);
-      a.setAttribute('target', '_blank');
-      a.setAttribute('rel', 'noopener noreferrer');
-      
+      a.style.display = 'none';
+      a.href = blobUrl;
+      a.download = fileName;
       document.body.appendChild(a);
       a.click();
-      a.remove();
-
       setTimeout(() => {
-        btn.innerText = oldText;
-        btn.disabled = false;
-      }, 1500);
-    });
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(blobUrl);
+      }, 1000);
+    }
   </script>
 </body>
 </html>
