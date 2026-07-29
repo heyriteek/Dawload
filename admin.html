@@ -19,11 +19,7 @@
       box-shadow: 0 16px 35px rgba(0, 0, 0, 0.7);
     }
 
-    /* LOGIN SCREEN STYLING */
-    .login-box {
-      text-align: center;
-      display: block;
-    }
+    .login-box { text-align: center; display: block; }
     .login-box h2 { font-size: 22px; color: #fff; margin-bottom: 8px; font-weight: 800; }
     .login-box p { font-size: 12px; color: #94a3b8; margin-bottom: 20px; }
     
@@ -54,11 +50,7 @@
       cursor: pointer;
     }
 
-    /* ADMIN DASHBOARD (HIDDEN BY DEFAULT) */
-    .dashboard-content {
-      display: none;
-    }
-
+    .dashboard-content { display: none; }
     .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #1e293b; padding-bottom: 14px; }
     .admin-header h2 { font-size: 18px; color: #c084fc; font-weight: 800; }
     .status-badge { font-size: 11px; padding: 4px 10px; border-radius: 20px; background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid #059669; }
@@ -108,7 +100,7 @@
 
   <div class="admin-card">
     
-    <!-- 🔒 LOGIN SCREEN -->
+    <!-- LOGIN SCREEN -->
     <div id="loginBox" class="login-box">
       <h2>🔐 Admin Login</h2>
       <p>Enter security PIN to access control panel</p>
@@ -116,7 +108,7 @@
       <button class="btn-login" onclick="checkPassword()">Unlock Panel</button>
     </div>
 
-    <!-- ⚙️ DASHBOARD PANEL (PROTECTED) -->
+    <!-- DASHBOARD PANEL -->
     <div id="dashboardContent" class="dashboard-content">
       <div class="admin-header">
         <h2>⚙️ Admin Control Center</h2>
@@ -174,7 +166,6 @@
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
   <script>
-    // 🔑 AAPKA DEFAULT ADMIN PASSWORD (APNE HISAB SE CHANGE KAR SAKTE HO)
     const SECRET_PIN = "mohit123";
 
     function checkPassword() {
@@ -188,7 +179,6 @@
       }
     }
 
-    // FIREBASE INITIALIZATION
     const firebaseConfig = {
       apiKey: "AIzaSyAMk0VFAi54nYovyErqfFD06x-vHlh1m9c",
       authDomain: "dawload-8b47d.firebaseapp.com",
@@ -201,7 +191,6 @@
     if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // FETCH CURRENT CONFIG FROM FIREBASE
     function loadFirebaseData() {
       db.collection('settings').doc('config').get().then((doc) => {
         if (doc.exists) {
@@ -212,10 +201,11 @@
           document.getElementById('showNotice').checked = data.showNotice || false;
           document.getElementById('noticeText').value = data.noticeText || '';
         }
+      }).catch((err) => {
+        console.error("Fetch error:", err);
       });
     }
 
-    // UPDATE CONFIG TO FIREBASE
     async function saveSettings() {
       const apiKey = document.getElementById('apiKey').value.trim();
       const apiHost = document.getElementById('apiHost').value.trim();
@@ -223,13 +213,18 @@
       const showNotice = document.getElementById('showNotice').checked;
       const noticeText = document.getElementById('noticeText').value.trim();
 
+      if (!apiKey || !apiHost) {
+        alert("Please enter both API Key and API Host before saving!");
+        return;
+      }
+
       try {
         await db.collection('settings').doc('config').set({
-          apiKey,
-          apiHost,
-          maintenanceMode,
-          showNotice,
-          noticeText,
+          apiKey: apiKey,
+          apiHost: apiHost,
+          maintenanceMode: maintenanceMode,
+          showNotice: showNotice,
+          noticeText: noticeText,
           updatedAt: firebase.firestore.FieldValue.serverTimestamp()
         }, { merge: true });
 
@@ -237,7 +232,7 @@
         toast.style.display = 'block';
         setTimeout(() => toast.style.display = 'none', 3000);
       } catch (error) {
-        alert("Firebase Save Error: " + error.message);
+        alert("Firebase Save Error: " + error.message + "\n\nCheck Firebase Firestore Rules!");
       }
     }
   </script>
