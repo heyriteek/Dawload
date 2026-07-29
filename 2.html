@@ -2,487 +2,169 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Insta Downloader</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Insta Downloader - Admin Panel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
-    * { 
-      box-sizing: border-box; 
-      margin: 0; 
-      padding: 0; 
-      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-      -webkit-tap-highlight-color: transparent;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+    body { background: #030712; color: #f8fafc; min-height: 100vh; padding: 20px 12px; display: flex; justify-content: center; align-items: center; }
     
-    body { 
-      background: #000000; 
-      color: #f8fafc; 
-      min-height: 100vh; 
-      display: flex; 
-      flex-direction: column; 
-      align-items: center; 
-      padding: 12px 10px; 
-      position: relative;
-      overflow-x: hidden;
-    }
-
-    /* APP WRAPPER */
-    .app-wrapper {
+    .admin-card {
       width: 100%;
-      max-width: 440px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    /* 1. HERO BANNER CARD */
-    .hero-card {
-      background: linear-gradient(145deg, #0f172a, #0b0f19);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 20px;
-      padding: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.6);
-    }
-
-    .hero-text { max-width: 58%; }
-
-    .hero-text h2 {
-      font-size: 22px;
-      font-weight: 800;
-      color: #fff;
-      line-height: 1.2;
-    }
-
-    .hero-text h2 span {
-      background: linear-gradient(135deg, #ec4899, #a855f7);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .hero-text p {
-      font-size: 12px;
-      color: #94a3b8;
-      margin-top: 8px;
-      line-height: 1.4;
-    }
-
-    .hero-illustration {
-      position: relative;
-      width: 100px;
-      height: 100px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .hero-insta-box {
-      width: 72px;
-      height: 72px;
-      background: linear-gradient(135deg, #f43f5e, #a855f7, #3b82f6);
-      border-radius: 22px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 0 35px rgba(168, 85, 247, 0.6);
-      transform: rotate(-6deg);
-    }
-
-    .hero-insta-box svg { width: 38px; height: 38px; fill: #fff; }
-
-    .hero-floating-icon {
-      position: absolute;
-      background: rgba(30, 41, 59, 0.8);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(8px);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-    }
-
-    .float-play { top: 0; left: 0; width: 26px; height: 26px; }
-    .float-reel { top: 8px; right: -4px; width: 24px; height: 24px; background: #e11d48; border: none; font-size: 10px; }
-    .float-img { bottom: 2px; left: 4px; width: 24px; height: 24px; font-size: 10px; }
-
-    /* 2. MAIN INPUT CARD */
-    .input-card {
+      max-width: 480px;
       background: #0d1527;
       border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 22px;
-      padding: 20px 18px;
-      box-shadow: 0 12px 30px rgba(0,0,0,0.7);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 16px 35px rgba(0, 0, 0, 0.7);
     }
 
-    .input-card-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 16px;
+    /* LOGIN SCREEN STYLING */
+    .login-box {
+      text-align: center;
+      display: block;
     }
-
-    .link-icon-box {
-      width: 42px;
-      height: 42px;
-      background: rgba(168, 85, 247, 0.2);
-      border: 1px solid rgba(168, 85, 247, 0.3);
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #d8b4fe;
-    }
-
-    .input-card-title h3 { font-size: 16px; font-weight: 700; color: #fff; }
-    .input-card-title p { font-size: 12px; color: #94a3b8; }
-
-    .input-box-wrap {
-      position: relative;
-      display: flex;
-      align-items: center;
-      margin-bottom: 14px;
-    }
-
-    input {
+    .login-box h2 { font-size: 22px; color: #fff; margin-bottom: 8px; font-weight: 800; }
+    .login-box p { font-size: 12px; color: #94a3b8; margin-bottom: 20px; }
+    
+    .login-input {
       width: 100%;
-      height: 58px;
-      padding: 0 115px 0 16px;
+      padding: 14px;
       background: #070c18;
       border: 1.5px solid #2a3853;
-      border-radius: 14px;
-      color: #ffffff;
-      font-size: 14px;
-      font-weight: 500;
-      outline: none;
-      transition: border-color 0.25s, box-shadow 0.25s;
-    }
-
-    input::placeholder { color: #8294b0; }
-    input:focus { 
-      border-color: #a855f7; 
-      box-shadow: 0 0 12px rgba(168, 85, 247, 0.25);
-    }
-
-    .paste-btn {
-      position: absolute;
-      right: 8px;
-      height: 42px;
-      background: linear-gradient(135deg, #a855f7, #8b5cf6);
+      border-radius: 12px;
       color: #fff;
-      border: none;
-      padding: 0 18px;
-      border-radius: 10px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
-      transition: transform 0.15s;
-    }
-
-    .paste-btn:active { transform: scale(0.95); }
-
-    .clear-btn {
-      position: absolute;
-      right: 100px;
-      background: rgba(255, 255, 255, 0.15);
-      color: #cbd5e1;
-      border: none;
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      font-size: 12px;
-      font-weight: bold;
-      cursor: pointer;
-      display: none;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .supports-text {
-      font-size: 12px;
-      color: #94a3b8;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      font-size: 15px;
+      text-align: center;
+      letter-spacing: 2px;
+      outline: none;
       margin-bottom: 16px;
     }
+    .login-input:focus { border-color: #a855f7; }
 
-    .supports-text span.check { color: #10b981; font-weight: bold; font-size: 14px; }
-
-    .btn-fetch {
+    .btn-login {
       width: 100%;
-      height: 52px;
+      height: 48px;
+      background: linear-gradient(135deg, #a855f7, #ec4899);
       border: none;
-      border-radius: 14px;
-      background: linear-gradient(135deg, #ec4899, #8b5cf6);
-      color: #fff;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      box-shadow: 0 8px 24px rgba(236, 72, 153, 0.35);
-      transition: transform 0.15s;
-    }
-
-    .btn-fetch:active { transform: scale(0.98); }
-
-    /* LOADER & RESULT PREVIEW */
-    .loader { display: none; margin-top: 16px; text-align: center; color: #c084fc; font-size: 14px; font-weight: 600; }
-    .result { display: none; margin-top: 18px; }
-    .media-box { width: 100%; max-height: 380px; border-radius: 14px; overflow: hidden; background: #000; margin-bottom: 14px; border: 1px solid rgba(255, 255, 255, 0.1); }
-    video, img { width: 100%; max-height: 380px; object-fit: contain; display: block; }
-    
-    .btn-download {
-      width: 100%;
-      height: 52px;
-      border: none;
-      border-radius: 14px;
-      background: linear-gradient(135deg, #10b981, #059669);
-      color: #fff;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
-    }
-
-    /* 3. HOW TO USE CARD */
-    .how-card {
-      background: #0d1527;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 20px;
-      padding: 18px;
-    }
-
-    .how-card h3 { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 16px; text-align: left; }
-
-    .steps-grid {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      position: relative;
-    }
-
-    .step-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      width: 22%;
-      z-index: 1;
-    }
-
-    .step-icon-box {
-      width: 44px;
-      height: 44px;
-      background: #182339;
-      border: 1px solid #2a3853;
       border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
       color: #fff;
-      margin-bottom: 8px;
-      position: relative;
-      font-size: 18px;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
     }
 
-    .step-num {
-      position: absolute;
-      bottom: -6px;
-      left: -4px;
-      width: 18px;
-      height: 18px;
-      background: #a855f7;
+    /* ADMIN DASHBOARD (HIDDEN BY DEFAULT) */
+    .dashboard-content {
+      display: none;
+    }
+
+    .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #1e293b; padding-bottom: 14px; }
+    .admin-header h2 { font-size: 18px; color: #c084fc; font-weight: 800; }
+    .status-badge { font-size: 11px; padding: 4px 10px; border-radius: 20px; background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid #059669; }
+
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 11px; font-weight: 800; color: #94a3b8; margin-bottom: 6px; letter-spacing: 0.5px; }
+    .form-group input, .form-group textarea {
+      width: 100%;
+      padding: 12px 14px;
+      background: #070c18;
+      border: 1.5px solid #2a3853;
+      border-radius: 12px;
       color: #fff;
-      border-radius: 50%;
-      font-size: 10px;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      font-size: 13px;
+      outline: none;
     }
+    .form-group input:focus, .form-group textarea:focus { border-color: #a855f7; }
 
-    .step-item h4 { font-size: 11px; font-weight: 700; color: #fff; margin-bottom: 3px; }
-    .step-item p { font-size: 9px; color: #64748b; line-height: 1.2; }
+    .toggle-card { display: flex; align-items: center; justify-content: space-between; background: #070c18; padding: 14px; border-radius: 12px; border: 1px solid #2a3853; margin-bottom: 16px; }
+    .toggle-card-info h4 { font-size: 13px; font-weight: 700; color: #fff; }
+    .toggle-card-info p { font-size: 10px; color: #64748b; margin-top: 2px; }
 
-    .steps-line {
-      position: absolute;
-      top: 22px;
-      left: 10%;
-      right: 10%;
-      height: 1px;
-      border-top: 2px dashed #2a3853;
-      z-index: 0;
+    .switch { position: relative; display: inline-block; width: 46px; height: 26px; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #334155; transition: .3s; border-radius: 24px; }
+    .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; }
+    input:checked + .slider { background-color: #a855f7; }
+    input:checked + .slider:before { transform: translateX(20px); }
+
+    .btn-save {
+      width: 100%;
+      height: 50px;
+      background: linear-gradient(135deg, #a855f7, #ec4899);
+      border: none;
+      border-radius: 12px;
+      color: #fff;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(168, 85, 247, 0.4);
     }
-
-    /* 4. FEATURES GRID */
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-      background: #0d1527;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 16px;
-      padding: 16px 8px;
-    }
-
-    .feature-box {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-    }
-
-    .feature-icon { font-size: 18px; margin-bottom: 6px; }
-    .feature-box h5 { font-size: 10px; font-weight: 700; color: #fff; }
-    .feature-box p { font-size: 8px; color: #64748b; margin-top: 2px; }
-
-    .hidden-notice { display: none !important; }
+    .btn-save:active { transform: scale(0.98); }
+    .toast { display: none; text-align: center; margin-top: 14px; color: #34d399; font-size: 13px; font-weight: 700; }
   </style>
 </head>
 <body>
 
-  <!-- Hidden notice element for backend compatibility -->
-  <div id="notice-banner" class="hidden-notice"></div>
-
-  <div class="app-wrapper">
-
-    <!-- 1. HERO CARD -->
-    <div class="hero-card">
-      <div class="hero-text">
-        <h2>Download<br><span>Instagram Content</span></h2>
-        <p>Download Reels, Videos, Photos in high quality easily.</p>
-      </div>
-
-      <div class="hero-illustration">
-        <div class="hero-insta-box">
-          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-        </div>
-        <div class="hero-floating-icon float-play">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-        </div>
-        <div class="hero-floating-icon float-reel">🎬</div>
-        <div class="hero-floating-icon float-img">🖼️</div>
-      </div>
+  <div class="admin-card">
+    
+    <!-- 🔒 LOGIN SCREEN -->
+    <div id="loginBox" class="login-box">
+      <h2>🔐 Admin Login</h2>
+      <p>Enter security PIN to access control panel</p>
+      <input type="password" id="adminPass" class="login-input" placeholder="Enter Admin Password">
+      <button class="btn-login" onclick="checkPassword()">Unlock Panel</button>
     </div>
 
-    <!-- 2. INPUT CARD -->
-    <div class="input-card">
-      <div class="input-card-header">
-        <div class="link-icon-box">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+    <!-- ⚙️ DASHBOARD PANEL (PROTECTED) -->
+    <div id="dashboardContent" class="dashboard-content">
+      <div class="admin-header">
+        <h2>⚙️ Admin Control Center</h2>
+        <span class="status-badge">Connected</span>
+      </div>
+
+      <!-- RAPIDAPI CONFIGURATION -->
+      <div class="form-group">
+        <label>RAPIDAPI KEY</label>
+        <input type="text" id="apiKey" placeholder="Paste RapidAPI Key here...">
+      </div>
+
+      <div class="form-group">
+        <label>RAPIDAPI HOST</label>
+        <input type="text" id="apiHost" placeholder="e.g. instagram-downloader.p.rapidapi.com">
+      </div>
+
+      <!-- FORCE COMING SOON / MAINTENANCE TOGGLE -->
+      <div class="toggle-card">
+        <div class="toggle-card-info">
+          <h4>🚀 Force "Coming Soon" Mode</h4>
+          <p>Enable if API limit finished or server updating</p>
         </div>
-        <div class="input-card-title">
-          <h3>Paste Instagram Link</h3>
-          <p>We'll fetch your media</p>
+        <label class="switch">
+          <input type="checkbox" id="maintenanceMode">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <!-- ANNOUNCEMENT BANNER CONTROL -->
+      <div class="toggle-card">
+        <div class="toggle-card-info">
+          <h4>📢 Show Top Notice Banner</h4>
+          <p>Display custom notice on app top</p>
         </div>
+        <label class="switch">
+          <input type="checkbox" id="showNotice">
+          <span class="slider"></span>
+        </label>
       </div>
 
-      <div class="input-box-wrap">
-        <input type="text" id="instaUrl" placeholder="Paste Instagram link here..." oninput="toggleClearBtn()">
-        <button id="clearBtn" class="clear-btn" onclick="clearInput()">✕</button>
-        <button id="pasteBtn" class="paste-btn" onclick="pasteClipboard()">
-          📋 Paste
-        </button>
+      <div class="form-group">
+        <label>NOTICE BANNER TEXT</label>
+        <textarea id="noticeText" rows="2" placeholder="e.g. 🔥 Fast HD Instagram Downloader Active!"></textarea>
       </div>
 
-      <div class="supports-text">
-        <span class="check">✓</span> Supports: Reels • Videos • Photos • IGTV
-      </div>
-
-      <button class="btn-fetch" onclick="downloadVideo()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-        Fetch Media
-      </button>
-
-      <div id="loader" class="loader">⚡ Fetching High Speed Link...</div>
-
-      <div id="result" class="result">
-        <div id="mediaContainer" class="media-box"></div>
-        <button id="downloadBtn" class="btn-download">📥 Save File directly</button>
-      </div>
-    </div>
-
-    <!-- 3. HOW TO USE CARD -->
-    <div class="how-card">
-      <h3>How to use?</h3>
-      <div class="steps-grid">
-        <div class="steps-line"></div>
-
-        <div class="step-item">
-          <div class="step-icon-box">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-            <span class="step-num">1</span>
-          </div>
-          <h4>Copy link</h4>
-          <p>Copy Instagram content link</p>
-        </div>
-
-        <div class="step-item">
-          <div class="step-icon-box">
-            📋
-            <span class="step-num">2</span>
-          </div>
-          <h4>Paste link</h4>
-          <p>Paste the link in the box above</p>
-        </div>
-
-        <div class="step-item">
-          <div class="step-icon-box">
-            ⚡
-            <span class="step-num">3</span>
-          </div>
-          <h4>Fetch media</h4>
-          <p>Click fetch to get your content</p>
-        </div>
-
-        <div class="step-item">
-          <div class="step-icon-box">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-            <span class="step-num">4</span>
-          </div>
-          <h4>Download</h4>
-          <p>Download in HD quality</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- 4. FEATURES GRID -->
-    <div class="features-grid">
-      <div class="feature-box">
-        <div class="feature-icon">💎</div>
-        <h5>HD Quality</h5>
-        <p>Best Resolution</p>
-      </div>
-      <div class="feature-box">
-        <div class="feature-icon">⚡</div>
-        <h5>Fast Download</h5>
-        <p>Super Fast</p>
-      </div>
-      <div class="feature-box">
-        <div class="feature-icon">🛡️</div>
-        <h5>Secure</h5>
-        <p>100% Safe</p>
-      </div>
-      <div class="feature-box">
-        <div class="feature-icon">🪄</div>
-        <h5>No Watermark</h5>
-        <p>Clean Content</p>
-      </div>
+      <button class="btn-save" onclick="saveSettings()">💾 Save Settings</button>
+      <div id="toast" class="toast">✅ Firebase Updated Successfully!</div>
     </div>
 
   </div>
@@ -492,138 +174,72 @@
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
   <script>
+    // 🔑 AAPKA DEFAULT ADMIN PASSWORD (APNE HISAB SE CHANGE KAR SAKTE HO)
+    const SECRET_PIN = "mohit123";
+
+    function checkPassword() {
+      const inputPass = document.getElementById('adminPass').value.trim();
+      if (inputPass === SECRET_PIN) {
+        document.getElementById('loginBox').style.display = "none";
+        document.getElementById('dashboardContent').style.display = "block";
+        loadFirebaseData();
+      } else {
+        alert("Wrong Password! Access Denied.");
+      }
+    }
+
+    // FIREBASE INITIALIZATION
     const firebaseConfig = {
       apiKey: "AIzaSyAMk0VFAi54nYovyErqfFD06x-vHlh1m9c",
       authDomain: "dawload-8b47d.firebaseapp.com",
       projectId: "dawload-8b47d",
       storageBucket: "dawload-8b47d.firebasestorage.app",
       messagingSenderId: "504882478942",
-      appId: "1:504882478942:web:24d8fea2edf0f7ebf559cf",
-      measurementId: "G-1BHK6JJBLV"
+      appId: "1:504882478942:web:24d8fea2edf0f7ebf559cf"
     };
 
     if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    let apiKey = "";
-    let apiHost = "";
-    let currentMediaUrl = "";
-    let currentMediaType = "video";
-
-    db.collection('settings').doc('config').get().then((doc) => {
-      if (doc.exists) {
-        const data = doc.data();
-        apiKey = data.apiKey;
-        apiHost = data.apiHost;
-        const banner = document.getElementById('notice-banner');
-        if(banner) banner.innerText = data.notice || "";
-      }
-    });
-
-    function toggleClearBtn() {
-      const input = document.getElementById('instaUrl');
-      const clearBtn = document.getElementById('clearBtn');
-      clearBtn.style.display = input.value.length > 0 ? "flex" : "none";
-    }
-
-    async function pasteClipboard() {
-      try {
-        if (navigator.clipboard && navigator.clipboard.readText) {
-          const text = await navigator.clipboard.readText();
-          if (text) {
-            const input = document.getElementById('instaUrl');
-            input.value = text;
-            toggleClearBtn();
-          }
+    // FETCH CURRENT CONFIG FROM FIREBASE
+    function loadFirebaseData() {
+      db.collection('settings').doc('config').get().then((doc) => {
+        if (doc.exists) {
+          const data = doc.data();
+          document.getElementById('apiKey').value = data.apiKey || '';
+          document.getElementById('apiHost').value = data.apiHost || '';
+          document.getElementById('maintenanceMode').checked = data.maintenanceMode || false;
+          document.getElementById('showNotice').checked = data.showNotice || false;
+          document.getElementById('noticeText').value = data.noticeText || '';
         }
-      } catch (err) {}
+      });
     }
 
-    function clearInput() {
-      const input = document.getElementById('instaUrl');
-      input.value = "";
-      toggleClearBtn();
-      input.focus();
-      document.getElementById('result').style.display = "none";
-      document.getElementById('mediaContainer').innerHTML = "";
-    }
-
-    async function downloadVideo() {
-      const url = document.getElementById('instaUrl').value.trim();
-      const loader = document.getElementById('loader');
-      const result = document.getElementById('result');
-      const mediaContainer = document.getElementById('mediaContainer');
-
-      if (!url) return alert("Please paste an Instagram URL!");
-      if (!apiKey || !apiHost) return alert("System setup pending from Admin Panel!");
-
-      loader.style.display = "block";
-      result.style.display = "none";
-      mediaContainer.innerHTML = "";
+    // UPDATE CONFIG TO FIREBASE
+    async function saveSettings() {
+      const apiKey = document.getElementById('apiKey').value.trim();
+      const apiHost = document.getElementById('apiHost').value.trim();
+      const maintenanceMode = document.getElementById('maintenanceMode').checked;
+      const showNotice = document.getElementById('showNotice').checked;
+      const noticeText = document.getElementById('noticeText').value.trim();
 
       try {
-        const response = await fetch(`https://${apiHost}/convert?url=${encodeURIComponent(url)}`, {
-          method: 'GET',
-          headers: {
-            'x-rapidapi-key': apiKey,
-            'x-rapidapi-host': apiHost
-          }
-        });
-        
-        const data = await response.json();
-        loader.style.display = "none";
+        await db.collection('settings').doc('config').set({
+          apiKey,
+          apiHost,
+          maintenanceMode,
+          showNotice,
+          noticeText,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
 
-        let mediaItem = null;
-        if (data.media && data.media.length > 0) {
-          mediaItem = data.media[0];
-        }
-
-        if (mediaItem && mediaItem.url) {
-          currentMediaUrl = mediaItem.url;
-          currentMediaType = mediaItem.type || "video";
-
-          if (currentMediaType === "image") {
-            mediaContainer.innerHTML = `<img src="${currentMediaUrl}" alt="Instagram Post">`;
-          } else {
-            mediaContainer.innerHTML = `<video src="${currentMediaUrl}" controls autoplay muted></video>`;
-          }
-
-          result.style.display = "block";
-        } else {
-          alert("Could not fetch media. Make sure the link is public!");
-        }
-      } catch (err) {
-        loader.style.display = "none";
-        alert("Error fetching media. Check API limits or URL.");
+        const toast = document.getElementById('toast');
+        toast.style.display = 'block';
+        setTimeout(() => toast.style.display = 'none', 3000);
+      } catch (error) {
+        alert("Firebase Save Error: " + error.message);
       }
     }
-
-    // Updated Direct Download Event Listener
-    document.getElementById('downloadBtn').addEventListener('click', () => {
-        if (!currentMediaUrl) {
-            alert("No media available!");
-            return;
-        }
-
-        const btn = document.getElementById('downloadBtn');
-        const originalText = btn.innerText;
-
-        btn.innerText = "⏳ Opening...";
-        btn.disabled = true;
-
-        const a = document.createElement("a");
-        a.href = currentMediaUrl;
-        a.target = "_blank";
-        a.rel = "noopener";
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-
-        setTimeout(() => {
-            btn.innerText = originalText;
-            btn.disabled = false;
-        }, 1000);
-    });
   </script>
 </body>
 </html>
